@@ -23,7 +23,7 @@ $(document).ready(function() {
         intervalID     = 0,
         animationSpeed = 66,
     
-        selectedYoshi = 0,
+        selectedYoshi,
         creationID    = 0,
         yoshiArr      = [0],
         spriteImage;
@@ -36,12 +36,9 @@ $(document).ready(function() {
     });
 
     //get the sprite image from what's currently set in css
-    spriteImage = $("#yoshi").css("background-image").substr(4);
-    spriteImage = spriteImage.substr(0, spriteImage.length - 1);
-    
+    spriteImage = $("#yoshi").css("background-image").slice(4, -1);
     
     function selectYoshi(id) {
-
         //prevents a never clearing setInterval when you hold down an arrow key while clicking another yoshi
         if (selectedYoshi) {
             selectedYoshi.yoshiKeyUpLeft();
@@ -81,8 +78,7 @@ $(document).ready(function() {
             selectYoshi(creationID);
         });
     }
-
-
+    
     function moveCharacter(dx, dy) {
         //move yoshi
         
@@ -128,19 +124,19 @@ $(document).ready(function() {
                 }
                 console.log(currentPositionBG1.left);*/
     }
-
+    
     function yoshiKeyUpLeft() {
         this.isCharacterMovingLeft = false;
         this.toggleAnimation();
         clearInterval(this.movingLeftIntervalID);
     }
-
+    
     function yoshiKeyUpRight() {
         this.isCharacterMovingRight = false;
         this.toggleAnimation();
         clearInterval(this.movingRightIntervalID);
     }
-
+    
     function yoshiKeyDownLeft() {
         this.isCharacterMovingLeft = true;
         this.toggleAnimation();
@@ -149,8 +145,7 @@ $(document).ready(function() {
         }, this.characterSpeed);
 
     }
-
-
+    
     function yoshiKeyDownRight() {
         this.isCharacterMovingRight = true;
         this.toggleAnimation();
@@ -158,7 +153,7 @@ $(document).ready(function() {
             selectedYoshi.moveCharacter(1, 0);
         }, this.characterSpeed);
     }
-
+    
     //yoshi object creation
     function createYoshi() {
         yoshiArr[creationID] = new YoshiObj(creationID);
@@ -176,10 +171,9 @@ $(document).ready(function() {
             selectedYoshi.yoshiKeyUpRight();
         }
     }
-
+    
     // handle key down
     function handleKeydown(event) {
-
         //console.log(event.keyCode);
         // on space, create a yoshi object and put it in an array;
         if (event.keyCode === 32) {
@@ -200,7 +194,7 @@ $(document).ready(function() {
                 selectedYoshi.yoshiKeyDownLeft();
             }
         }
-
+        
         // Prevent scrolling when an arrow key is pressed.
         if (event.stopPropagation) {
             event.stopPropagation();
@@ -213,32 +207,26 @@ $(document).ready(function() {
     
     //Animation functions
     function toggleAnimation() {
-
         if (this.isAnimationRunning) {
             this.stopAnimation();
         } else {
-
             this.startAnimation();
         }
     }
 
     function startAnimation() {
-
         this.isAnimationRunning = true;
         intervalID = setInterval(this.doAnimation, animationSpeed);
     }
 
 
     function stopAnimation() {
-
         this.isAnimationRunning = false;
         clearInterval(intervalID);
     }
 
     function doAnimation() {
-
         //PROBLEM: this.isCharacterMovingLeft === undefined for some reason. that ruins animation.
-    
         currentFrame += 1;
         if (currentFrame > 7) {
             currentFrame = 0;
