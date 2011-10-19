@@ -1,3 +1,19 @@
+/*jslint devel: true, regexp: true, browser: true, confusion: true, continue: true, sloppy: true, white: true, maxerr: 50, indent: 4 */
+
+/*global $ */
+
+/*properties
+    append, cancelBubble, characterSpeed, css, currentPosition, doAnimation, 
+    hide, id, isAnimationRunning, isCharacterMovingLeft, 
+    isCharacterMovingRight, keyCode, keydown, keypress, keyup, left, log, 
+    mousedown, moveCharacter, movingLeftIntervalID, movingRightIntervalID, 
+    offset, preventDefault, random, ready, returnValue, spriteHeight, 
+    startAnimation, stopAnimation, stopPropagation, toggleAnimation, top, 
+    yoshiKeyDownLeft, yoshiKeyDownRight, yoshiKeyUpLeft, yoshiKeyUpRight, 
+    yoshiSprite
+*/
+
+
 $(document).ready(function() {
     //to hide the (necessary) original <img> yoshi
     $("#yoshi").hide();
@@ -22,6 +38,19 @@ $(document).ready(function() {
     //get the sprite image from what's currently set in css
     spriteImage = $("#yoshi").css("background-image").substr(4);
     spriteImage = spriteImage.substr(0, spriteImage.length - 1);
+    
+    
+    function selectYoshi(id) {
+
+        //prevents a never clearing setInterval when you hold down an arrow key while clicking another yoshi
+        if (selectedYoshi) {
+            selectedYoshi.yoshiKeyUpLeft();
+            selectedYoshi.yoshiKeyUpRight();
+        }
+
+        selectedYoshi = yoshiArr[id];
+        console.log(selectedYoshi);
+    }
     
     //Yoshi class
     function YoshiObj(creationID) {
@@ -51,18 +80,6 @@ $(document).ready(function() {
         $("#yoshi" + this.id).mousedown(function() {
             selectYoshi(creationID);
         });
-    }
-    
-    function selectYoshi(id) {
-
-        //prevents a never clearing setInterval when you hold down an arrow key while clicking another yoshi
-        if (selectedYoshi) {
-            selectedYoshi.yoshiKeyUpLeft();
-            selectedYoshi.yoshiKeyUpRight();
-        }
-
-        selectedYoshi = yoshiArr[id];
-        console.log(selectedYoshi);
     }
 
 
@@ -145,7 +162,7 @@ $(document).ready(function() {
     //yoshi object creation
     function createYoshi() {
         yoshiArr[creationID] = new YoshiObj(creationID);
-        ++creationID;
+        creationID += 1;
     }
     
     // handle key up
@@ -165,7 +182,7 @@ $(document).ready(function() {
 
         //console.log(event.keyCode);
         // on space, create a yoshi object and put it in an array;
-        if (event.keyCode == 32) {
+        if (event.keyCode === 32) {
 
             createYoshi();
 
@@ -222,7 +239,7 @@ $(document).ready(function() {
 
         //PROBLEM: this.isCharacterMovingLeft === undefined for some reason. that ruins animation.
     
-        currentFrame++;
+        currentFrame += 1;
         if (currentFrame > 7) {
             currentFrame = 0;
         }
