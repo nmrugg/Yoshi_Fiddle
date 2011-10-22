@@ -1,0 +1,14 @@
+/*
+---
+name: Yoshi Fiddle
+description: This repo is to help teach JavaScript.
+authors:
+  - crugg
+  - nmrugg
+resources:
+  - /js/empty.js
+  - /css/normalize.css
+...
+*/
+
+<p>This repo is to help teach JavaScript.</p> 
