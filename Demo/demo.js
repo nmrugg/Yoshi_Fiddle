@@ -15,7 +15,6 @@
 
 
 $(document).ready(function() {
-    //declare some initial variables
     var currentFrame   = 0,
         intervalID     = 0,
         animationSpeed = 66,
