@@ -15,9 +15,6 @@
 
 
 $(document).ready(function() {
-    //to hide the (necessary) original <img> yoshi
-    $("#yoshi").hide();
-    
     //declare some initial variables
     var currentFrame   = 0,
         intervalID     = 0,
