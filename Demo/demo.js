@@ -24,12 +24,10 @@ $(document).ready(function() {
         yoshiArr      = [0],
         spriteImage;
     
-    //hide scrollbar in chrome
-    $("body").css("overflow", "hidden");
-    // Prevent Firefox from scrolling when an arrow key is pressed.
-    $(window).keypress(function() {
+    /// Prevent Firefox from scrolling when an arrow key is pressed.
+    window.keypress = function() {
         return false;
-    });
+    };
 
     //get the sprite image from what's currently set in css
     spriteImage = $("#yoshi").css("background-image").slice(4, -1);
