@@ -15,7 +15,11 @@
 
 
 $(document).ready(function() {
-    var Yoshi_maker;
+    var i,
+        starting_yoshi_count = 20,
+        Yoshi_maker,
+        Yoshis = [];
+    
     /// Prevent Firefox from scrolling when an arrow key is pressed.
     window.keypress = function() {
         return false;
@@ -32,7 +36,7 @@ $(document).ready(function() {
         return function () {
             /// These variables are created each time a Yoshi is made and only that Yoshi object can see them (so they never clash with other Yoshis).
                 
-            var ai = true,
+            var ai,
                 el = document.createElement("div"),
                 /// facing is either -1 for left or 1 for right
                 facing = Math.round(Math.random()) || -1,
@@ -46,6 +50,7 @@ $(document).ready(function() {
             el.style.position = "absolute";
             el.style.width  = sprite_size + "px";
             el.style.height = sprite_size + "px";
+            el.style.cursor = "pointer";
             
             function set_frame() {
                 if (frame > 7) {
@@ -76,6 +81,10 @@ $(document).ready(function() {
                 horizontal = Number(horizontal);
                 vertical   = Number(vertical);
                 
+                if (pos_y === 0 && vertical < 0) {
+                    vertical = 0;
+                }
+                
                 /// AI might do this.
                 if (horizontal === 0 && vertical === 0) {
                     stand();
@@ -87,8 +96,15 @@ $(document).ready(function() {
                 frame += 1;
                 pos_x += speed * horizontal;
                 pos_y += speed * vertical;
+                if (pos_y < 0) {
+                    pos_y = 0;
+                }
                 el.style.left = pos_x;
                 el.style.top  = pos_y;
+                ///NOTE: zIndex can't be negitive.
+                if (pos_y >= 0) {
+                    el.style.zIndex = pos_y;
+                }
                                 
                 set_frame();
                 moving = true;
@@ -143,7 +159,6 @@ $(document).ready(function() {
             
             
             /// Start the Yoshi standing.
-            stand();
             start_ai();
             /// Now that he is all ready, make him visible.
             document.body.appendChild(el);
@@ -162,7 +177,9 @@ $(document).ready(function() {
     }());
     
     
-    Yoshi_maker();
+    for (i = 0; i < starting_yoshi_count; i += 1) {
+        Yoshis[i] = Yoshi_maker();
+    }
     
     return;
     /// Get the sprite image from what's currently set in css
