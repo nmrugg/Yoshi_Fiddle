@@ -15,21 +15,87 @@
 
 
 $(document).ready(function() {
-    var currentFrame   = 0,
-        intervalID     = 0,
-        animationSpeed = 66,
-    
-        selectedYoshi,
-        creationID    = 0,
-        yoshiArr      = [0],
-        spriteImage;
-    
+    var Yoshi_maker;
     /// Prevent Firefox from scrolling when an arrow key is pressed.
     window.keypress = function() {
         return false;
     };
-
-    //get the sprite image from what's currently set in css
+    
+    
+    /// This first function is run immediately to create the other function that is stored in Yoshi_maker.
+    Yoshi_maker = (function ()
+    {
+        /// Private variables created once that only Yoshi_maker() can see.
+        var speed = 5,
+            sprite_size = 64;
+        
+        return function () {
+            /// These variables are created each time a Yoshi is made and only that Yoshi object can see them (so they never clash with other Yoshis).
+                
+            var facing = Math.round(Math.random()) || -1,
+                frame = 0,
+                el = document.createElement("div"),
+                /// Create a random starting point
+                pos_x = Math.floor(Math.random() * 500),
+                pos_y = Math.floor(Math.random() * 140);
+            
+            el.style.background = "url(http://i53.tinypic.com/bdwhat.gif)";
+            el.style.position = "absolute";
+            el.style.width  = sprite_size + "px";
+            el.style.height = sprite_size + "px";
+            
+            function set_frame() {
+                if (frame > 7) {
+                    frame = 0;
+                }
+                
+                el.style.backgroundPosition = (sprite_size * (facing === 1)) + "px " + (sprite_size * frame) + "px";
+            }
+            
+            function stand() {
+                frame = 0;
+                el.style.left = pos_x;
+                el.style.top  = pos_y;
+                set_frame();
+            }
+            
+            /**
+             * Move the Yoshi
+             *
+             * @param horizonal (int) Whether the Yoshi is moving right or left (-1 = left, 0 = neither, 1 = right)
+             * @param vertical  (int) Whether the Yoshi is moving up or down (-1 = up, 0 = neither, 1 = down)
+             */
+            function walk(horizonal, vertical) {
+                /// Make sure that the variables are numbers because they will be used in equations.
+                vertical = Number(horizonal);
+                vertical = Number(vertical);
+                
+                facing = horizontal || facing;
+                
+                frame += 1;
+                pos_x += speed * horizontal;
+                pos_y += speed * vertical;
+                el.style.left = pos_x;
+                el.style.top  = pos_y;
+                                
+                set_frame();
+            }
+            
+            /// Start the Yoshi standing.
+            stand();
+            /// Now that he is all ready, make him visible.
+            document.body.appendChild(el);
+            
+            return {
+                walk: walk
+            };
+        };
+    }());
+    
+    Yoshi_maker();
+    
+    return;
+    /// Get the sprite image from what's currently set in css
     spriteImage = $("#yoshi").css("background-image").slice(4, -1);
     
     function selectYoshi(id) {

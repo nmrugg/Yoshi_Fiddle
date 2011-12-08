@@ -17,15 +17,17 @@
     position:absolute;    
 }
 
-#yoshi {
+#yoshi_model {
     background: url(http://i53.tinypic.com/bdwhat.gif);
     width: 64px;
     height: 64px;
     position: absolute;
-    top: 250px;
-    left: 50px;
+    top:  -100px;
+    left: -100px;
+    visibility: hidden;
 }
 
 body {
     overflow: hidden;
+    margin: 0;
 }
