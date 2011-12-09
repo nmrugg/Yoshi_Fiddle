@@ -10,13 +10,8 @@
 
 
 window.onload = function() {
-    var i,
-        starting_yoshi_count = 20,
-        Yoshi_maker,
-        Yoshis = [];
-    
     /// This first function is run immediately to create the other function that is stored in Yoshi_maker.
-    Yoshi_maker = (function ()
+    var Yoshi_maker = (function ()
     {
         /// Private variables created once that only Yoshi_maker() can see.
         var speed = 5,
@@ -82,7 +77,7 @@ window.onload = function() {
                     vertical = 0;
                 }
                 
-                /// AI might do this.
+                /// Is it not moving?
                 if (horizontal === 0 && vertical === 0) {
                     stand();
                     window.setTimeout(function () {
@@ -168,6 +163,7 @@ window.onload = function() {
             document.body.appendChild(el);
             el.style.visibility = "visible";
             
+            /// This is the object that will be returned by the function to let the other functions outside of the closure interact with the Yoshi.
             this_obj = {
                 take_control: function () {
                     ai = false;
@@ -180,6 +176,7 @@ window.onload = function() {
             };
             
             el.onclick = function (e) {
+                /// This function will be added later by other code below.
                 if (typeof this_obj.onclick === "function") {
                     this_obj.onclick(e);
                 }
@@ -189,12 +186,17 @@ window.onload = function() {
         };
     }());
     
+    /// The Yoshi_maker() cannot see or manipulate these variables.
     (function () {
         var current_id = false,
             keys_down = {},
             horizontal = 0,
             vertical   = 0,
-            running    = 0;
+            running    = 0,
+            
+            i,
+            starting_yoshi_count = 20,
+            Yoshis = [];
         
         /// This is the function moves the user's Yoshi. It keeps on looping.
         /// If the user has not selected a Yoshi or is not pressing any keys, nothing much happens.
