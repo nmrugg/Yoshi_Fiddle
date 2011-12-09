@@ -1,10 +1,11 @@
-/*jslint devel: true, regexp: true, browser: true, confusion: true, continue: true, sloppy: true, white: true, maxerr: 50, indent: 4 */
+/*jslint devel: true, regexp: true, browser: true, confusion: true, continue: true, sloppy: true, white: true, forin: true, indent: 4 */
 
 /*properties
     appendChild, background, backgroundPosition, body, clearInterval, 
-    createElement, cursor, height, keypress, left, move, onload, position, 
-    random, relinquish_control, round, setInterval, setTimeout, style, 
-    take_control, top, width, zIndex
+    createElement, cursor, event, height, keyCode, left, move, onclick, 
+    onkeydown, onkeypress, onkeyup, onload, position, random, 
+    relinquish_control, round, setInterval, setTimeout, shiftKey, style, 
+    take_control, top, visibility, which, width, zIndex
 */
 
 
@@ -175,14 +176,14 @@ window.onload = function() {
                 relinquish_control: function () {
                     start_ai();
                 },
-                move: move,
-            }
+                move: move
+            };
             
             el.onclick = function (e) {
                 if (typeof this_obj.onclick === "function") {
                     this_obj.onclick(e);
                 }
-            }
+            };
             
             return this_obj;
         };
@@ -204,7 +205,7 @@ window.onload = function() {
         }, 30);
         
         function create_onclick_function(id) {
-            return function (e) {
+            return function () {
                 /// Did the user click on the same Yoshi?
                 if (id === current_id) {
                     return;
@@ -221,7 +222,8 @@ window.onload = function() {
         }
         
         function calculate_direction() {
-            var tmp_horizontal = 0,
+            var key,
+                tmp_horizontal = 0,
                 tmp_vertical   = 0,
                 tmp_running    = 0;
             
@@ -246,8 +248,7 @@ window.onload = function() {
         }
         
         function keypressed(e) {
-            var cur_key,
-                key;
+            var cur_key;
             
             /// window.event is for IE.
             e = e || window.event;
