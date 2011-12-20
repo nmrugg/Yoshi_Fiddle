@@ -38,6 +38,8 @@ window.onload = function() {
             el.style.height = sprite_size + "px";
             el.style.cursor = "pointer";
             
+            /// Create private functions that only that Yoshi can see.
+            
             function set_frame() {
                 if (frame > 7) {
                     frame = 0;
@@ -143,6 +145,7 @@ window.onload = function() {
                     }
                 }
                 
+                ///NOTE: These function keep looping until ai is FALSE.
                 change_hor();
                 change_vert();
                 change_running();
@@ -245,8 +248,8 @@ window.onload = function() {
             }
             
             horizontal = tmp_horizontal;
-            vertical = tmp_vertical;
-            running = tmp_running;
+            vertical   = tmp_vertical;
+            running    = tmp_running;
         }
         
         function keypressed(e) {
@@ -267,7 +270,6 @@ window.onload = function() {
             if (e.shiftKey && (cur_key === 43 || cur_key === 187)) {
                 /// Make me more Yoshis!
                 Yoshis[Yoshis.length] = new Yoshi_maker();
-                ///NOTE: Because this creates a function, it can't be in a loop (Crockford told me so (strange things happen in loops)).
                 Yoshis[Yoshis.length - 1].onclick = create_onclick_function(Yoshis.length - 1);
             }
             /// Prevent Firefox from scrolling when an arrow key is pressed.
@@ -290,6 +292,7 @@ window.onload = function() {
             }
         };
         
+        /// This is where it all begins.
         /// Create me Yoshis!
         for (i = 0; i < starting_yoshi_count; i += 1) {
             Yoshis[i] = new Yoshi_maker();
